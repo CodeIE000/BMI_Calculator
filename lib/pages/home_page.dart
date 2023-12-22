@@ -27,7 +27,11 @@ class _HomeState extends State<Home> {
         elevation: 0,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: const Text("BMI Calculator"),
+        title: const Text(
+          "BMI CALCULATOR",
+          style: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
