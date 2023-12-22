@@ -1,9 +1,9 @@
 class Button {
-  static const String del = "D";
-  static const String clr = "C";
+  static const String del = "Del";
+  static const String clr = "Weight";
   static const String calculate = "=";
   static const String dot = ".";
-  static const String blank = "";
+  static const String blank = "Height";
 
   static const String n0 = "0";
   static const String n1 = "1";

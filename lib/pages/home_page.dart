@@ -10,9 +10,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _textController = TextEditingController();
+
+  String weight = "";
+  String height = "";
+  int index = 0;
+
   @override
   Widget build(BuildContext context) {
+    final _textController = TextEditingController();
     final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -25,8 +33,66 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           // Weight input
+          Expanded(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      "WEIGHT",
+                      style: TextStyle(
+                          color: index == 0 ? objectGreen : Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      "$weight".isEmpty ? "0" : "$weight",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
 
           // Height input
+          Expanded(
+            child: SingleChildScrollView(
+              reverse: true,
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      "HEIGHT",
+                      style: TextStyle(
+                          color: index == 1 ? objectGreen : Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      "0",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
 
           // BMI score display
           Expanded(
@@ -35,16 +101,31 @@ class _HomeState extends State<Home> {
               child: Container(
                 alignment: Alignment.center,
                 padding: EdgeInsets.all(16),
-                child: Text(
-                  "0000000000000000000000000000",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.end,
+                child: Column(
+                  children: [
+                    Text(
+                      "BMI SCORE",
+                      style: TextStyle(
+                          color: index == 2 ? objectGreen : Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      "0",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.end,
+                    ),
+                  ],
                 ),
               ),
             ),
+          ),
+          SizedBox(
+            height: 20,
           ),
 
           // Input buttons
@@ -61,20 +142,51 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // Building buttons function
   Widget buildButton(value) {
-    return Material(
-      clipBehavior: Clip.hardEdge,
-      color: subBackgroundColor,
-      shape: OutlineInputBorder(borderRadius: BorderRadius.circular(50)),
-      child: InkWell(
-        onTap: () {},
-        child: Center(
-          child: Text(
-            value,
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Material(
+        clipBehavior: Clip.hardEdge,
+        color: subBackgroundColor,
+        shape: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(50),
+            borderSide: BorderSide(color: subBackgroundColor)),
+        child: InkWell(
+          onTap: () => onButtonTap(value),
+          child: Center(
+            child: Text(
+              value,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ),
     );
+  }
+
+  // On button tap function
+  void onButtonTap(String value) {
+    if (value == "Weight") {
+      setState(() {
+        index = 0;
+      });
+    } else if (value == "Height") {
+      setState(() {
+        index = 1;
+      });
+    } else if (value == "=") {
+      setState(() {
+        index = 2;
+      });
+    }
+
+    if (value != Button.dot && int.tryParse(value) == null) {}
+    setState(() {
+      weight += value;
+    });
   }
 }
