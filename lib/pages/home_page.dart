@@ -13,6 +13,7 @@ class _HomeState extends State<Home> {
   String weight = "";
   String height = "";
   String bmi = "";
+  String classification = "";
   int index = 0;
 
   @override
@@ -32,20 +33,23 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const SizedBox(height: 10),
+
+          // Weight text display
           Text(
-            "WEIGHT",
+            "WEIGHT(kg)",
             style: TextStyle(
                 color: index == 0 ? objectGreen : Colors.white,
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
           ),
+
           // Weight input
           SingleChildScrollView(
             reverse: true,
             scrollDirection: Axis.horizontal,
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(1),
               child: Column(
                 children: [
                   Text(
@@ -61,8 +65,9 @@ class _HomeState extends State<Home> {
             ),
           ),
 
+          // Height text display
           Text(
-            "HEIGHT",
+            "HEIGHT(cm)",
             style: TextStyle(
                 color: index == 1 ? objectGreen : Colors.white,
                 fontSize: 20,
@@ -72,10 +77,10 @@ class _HomeState extends State<Home> {
           // Height input
           SingleChildScrollView(
             reverse: true,
-            scrollDirection: Axis.vertical,
+            scrollDirection: Axis.horizontal,
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(1),
               child: Column(
                 children: [
                   Text(
@@ -91,6 +96,7 @@ class _HomeState extends State<Home> {
             ),
           ),
 
+          // BMI Score text display
           Text(
             "BMI SCORE",
             style: TextStyle(
@@ -98,12 +104,14 @@ class _HomeState extends State<Home> {
                 fontSize: 20,
                 fontWeight: FontWeight.bold),
           ),
+
           // BMI score display
           SingleChildScrollView(
             reverse: true,
+            scrollDirection: Axis.horizontal,
             child: Container(
               alignment: Alignment.center,
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.all(1),
               child: Column(
                 children: [
                   Text(
@@ -118,6 +126,16 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
+
+          // BMI Classification text
+          Text(
+            classification.isEmpty ? "NONE" : classification,
+            style: TextStyle(
+                color: index == 2 ? objectGreen : Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.bold),
+          ),
+
           const SizedBox(
             height: 20,
           ),
@@ -162,33 +180,76 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // On button tap function
+  // On button tap function, calculations and logics
   void onButtonTap(String value) {
     if (value == "Weight") {
+      // User clicked weight key
       setState(() {
         index = 0;
       });
     } else if (value == "Height") {
+      // User clicked height key
       setState(() {
         index = 1;
       });
     } else if (value == "Calculate") {
+      // User clicked calculate key
       setState(() {
         index = 2;
+
+        // Convert strings to double
         final double doubleWeight = double.parse(weight);
         final double doubleHeight = double.parse(height);
 
+        // BMI score calculation
         double result = doubleWeight / (doubleHeight * doubleHeight / 10000);
+
+        // Classifications
+        if (result < 16.5) {
+          setState(() {
+            classification = "SEVERELY WASTED";
+          });
+        } else if (result >= 16.5 && result < 18.5) {
+          setState(() {
+            classification = "UNDERWEIGHT";
+          });
+        } else if (result >= 18.5 && result < 25) {
+          setState(() {
+            classification = "NORMAL";
+          });
+        } else if (result >= 25 && result < 30) {
+          setState(() {
+            classification = "OVERWEIGHT";
+          });
+        } else if (result >= 30 && result < 35) {
+          setState(() {
+            classification = "OBESITY CLASS I";
+          });
+        } else if (result >= 35 && result < 40) {
+          setState(() {
+            classification = "OBESITY CLASS II";
+          });
+        } else if (result >= 40) {
+          setState(() {
+            classification = "OBESITY CLASS III";
+          });
+        }
+
+        // Convert BMI score to string
         String finalResult = result.toStringAsFixed(2);
+
+        // Change BMI score value and display
         setState(() {
           bmi = finalResult;
         });
       });
     } else if (value == "Clear") {
+      //User clicked clear key
       setState(() {
         weight = "";
         height = "";
         bmi = "";
+        classification = "NONE";
         if (index == 2) {
           setState(() {
             index = 0;
@@ -197,12 +258,14 @@ class _HomeState extends State<Home> {
       });
     }
 
+    // Inputs when weight is selected
     if ((value == Button.dot || double.tryParse(value) != null) && index == 0) {
       setState(() {
         weight += value;
       });
     }
 
+    // Inputs when height is selected
     if ((value == Button.dot || double.tryParse(value) != null) && index == 1) {
       setState(() {
         height += value;
