@@ -1,9 +1,9 @@
 class Button {
-  static const String del = "Del";
-  static const String clr = "Weight";
-  static const String calculate = "=";
+  static const String clear = "Clear";
+  static const String weight = "Weight";
+  static const String height = "Height";
+  static const String calculate = "Calculate";
   static const String dot = ".";
-  static const String blank = "Height";
 
   static const String n0 = "0";
   static const String n1 = "1";
@@ -17,9 +17,9 @@ class Button {
   static const String n9 = "9";
 
   static const List<String> buttonValues = [
-    del,
-    clr,
-    blank,
+    clear,
+    weight,
+    height,
     n7,
     n8,
     n9,

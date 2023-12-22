@@ -14,6 +14,7 @@ class _HomeState extends State<Home> {
 
   String weight = "";
   String height = "";
+  String bmi = "";
   int index = 0;
 
   @override
@@ -31,96 +32,92 @@ class _HomeState extends State<Home> {
         title: const Text("BMI Calculator"),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const SizedBox(height: 10),
+          Text(
+            "WEIGHT",
+            style: TextStyle(
+                color: index == 0 ? objectGreen : Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
           // Weight input
-          Expanded(
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      "WEIGHT",
-                      style: TextStyle(
-                          color: index == 0 ? objectGreen : Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "$weight".isEmpty ? "0" : "$weight",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
+          SingleChildScrollView(
+            reverse: true,
+            scrollDirection: Axis.horizontal,
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(5),
+              child: Column(
+                children: [
+                  Text(
+                    "$weight".isEmpty ? "0" : "$weight",
+                    style: TextStyle(
+                        color: index == 0 ? objectGreen : Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
               ),
             ),
+          ),
+
+          Text(
+            "HEIGHT",
+            style: TextStyle(
+                color: index == 1 ? objectGreen : Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
           ),
 
           // Height input
-          Expanded(
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      "HEIGHT",
-                      style: TextStyle(
-                          color: index == 1 ? objectGreen : Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "0",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
+          SingleChildScrollView(
+            reverse: true,
+            scrollDirection: Axis.vertical,
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(5),
+              child: Column(
+                children: [
+                  Text(
+                    "$height".isEmpty ? "0" : "$height",
+                    style: TextStyle(
+                        color: index == 1 ? objectGreen : Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
               ),
             ),
           ),
 
+          Text(
+            "BMI SCORE",
+            style: TextStyle(
+                color: index == 2 ? objectGreen : Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold),
+          ),
           // BMI score display
-          Expanded(
-            child: SingleChildScrollView(
-              reverse: true,
-              child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      "BMI SCORE",
-                      style: TextStyle(
-                          color: index == 2 ? objectGreen : Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      "0",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
+          SingleChildScrollView(
+            reverse: true,
+            child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(5),
+              child: Column(
+                children: [
+                  Text(
+                    "$bmi".isEmpty ? "0" : "$bmi",
+                    style: TextStyle(
+                        color: index == 2 ? objectGreen : Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
               ),
             ),
           ),
@@ -178,15 +175,41 @@ class _HomeState extends State<Home> {
       setState(() {
         index = 1;
       });
-    } else if (value == "=") {
+    } else if (value == "Calculate") {
       setState(() {
         index = 2;
+        final double doubleWeight = double.parse(weight);
+        final double doubleHeight = double.parse(height);
+
+        double result = doubleWeight / (doubleHeight * doubleHeight / 10000);
+        String finalResult = result.toStringAsFixed(2);
+        setState(() {
+          bmi = finalResult;
+        });
+      });
+    } else if (value == "Clear") {
+      setState(() {
+        weight = "";
+        height = "";
+        bmi = "";
+        if (index == 2) {
+          setState(() {
+            index = 0;
+          });
+        }
       });
     }
 
-    if (value != Button.dot && int.tryParse(value) == null) {}
-    setState(() {
-      weight += value;
-    });
+    if ((value == Button.dot || double.tryParse(value) != null) && index == 0) {
+      setState(() {
+        weight += value;
+      });
+    }
+
+    if ((value == Button.dot || double.tryParse(value) != null) && index == 1) {
+      setState(() {
+        height += value;
+      });
+    }
   }
 }
