@@ -10,8 +10,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final _textController = TextEditingController();
-
   String weight = "";
   String height = "";
   String bmi = "";
@@ -19,7 +17,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final _textController = TextEditingController();
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -48,11 +45,11 @@ class _HomeState extends State<Home> {
             scrollDirection: Axis.horizontal,
             child: Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 children: [
                   Text(
-                    "$weight".isEmpty ? "0" : "$weight",
+                    weight.isEmpty ? "0" : weight,
                     style: TextStyle(
                         color: index == 0 ? objectGreen : Colors.white,
                         fontSize: 40,
@@ -78,11 +75,11 @@ class _HomeState extends State<Home> {
             scrollDirection: Axis.vertical,
             child: Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 children: [
                   Text(
-                    "$height".isEmpty ? "0" : "$height",
+                    height.isEmpty ? "0" : height,
                     style: TextStyle(
                         color: index == 1 ? objectGreen : Colors.white,
                         fontSize: 40,
@@ -106,11 +103,11 @@ class _HomeState extends State<Home> {
             reverse: true,
             child: Container(
               alignment: Alignment.center,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Column(
                 children: [
                   Text(
-                    "$bmi".isEmpty ? "0" : "$bmi",
+                    bmi.isEmpty ? "0" : bmi,
                     style: TextStyle(
                         color: index == 2 ? objectGreen : Colors.white,
                         fontSize: 40,
@@ -121,7 +118,7 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
 
@@ -154,7 +151,7 @@ class _HomeState extends State<Home> {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
